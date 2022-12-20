@@ -2,9 +2,11 @@ import * as cheerio from 'cheerio';
 import fetch from 'node-fetch'
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 
 const app=express();
+app.use(cors())
 app.use(bodyParser.json());
 
 const obj={

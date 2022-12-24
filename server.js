@@ -53,7 +53,7 @@ app.post("/info", (req, res) => {
         givenPrice: giveprice,
       });
       console.log(pricess);
-      if (data.length - 1 === i) {
+      if (data.length === i) {
         res.status(200).json(responseArr);
         return;
       }

@@ -21,6 +21,7 @@ app.post("/info", (req, res) => {
 
   const responseArr = [];
   data.forEach((element, i) => {
+    console.log(element.finalprice);
     element.site === "flipkart"
       ? responseGiver(
           element.url,
@@ -47,10 +48,10 @@ app.post("/info", (req, res) => {
         return;
       }
       responseArr.push({
+        givenPrice: giveprice,
+        currentPrice: pricess,
         buyLink: url,
         webiste: site,
-        currentPrice: pricess,
-        givenPrice: giveprice,
       });
       console.log(pricess);
       console.log(data.length, i);

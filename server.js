@@ -21,7 +21,6 @@ app.post("/info", (req, res) => {
 
   const responseArr = [];
   data.forEach((element, i) => {
-    console.log(element.finalprice);
     element.site === "flipkart"
       ? responseGiver(
           element.url,
@@ -38,23 +37,22 @@ app.post("/info", (req, res) => {
         )
       : "";
 
-    async function responseGiver(url, site, giveprice, find) {
+    async function responseGiver(url, site, finalprice, find) {
+      console.log(finalprice);
       const response = await fetch(url);
       const body = await response.text();
       const $ = cheerio.load(body);
       const pricess = $(find).text().replace(/[₹,.]/g, "");
       if (!pricess || pricess == "") {
-        responseGiver(url, site, giveprice, find);
+        responseGiver(url, site, finalprice, find);
         return;
       }
       responseArr.push({
-        givenPrice: giveprice,
+        yourPrice: finalprice,
         currentPrice: pricess,
         buyLink: url,
         webiste: site,
       });
-      console.log(pricess);
-      console.log(data.length, i);
       if (data.length === responseArr.length) {
         res.status(200).json(responseArr);
         return;

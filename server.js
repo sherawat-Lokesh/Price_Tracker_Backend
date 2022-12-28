@@ -11,8 +11,10 @@ app.use(cors());
 const obj = {
   amazon:
     "#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2) > span.a-price-whole",
+  amazonImage: "#landingImage",
   flipkart:
     "#container > div > div._2c7YLP.UtUXW0._6t1WkM._3HqJxg > div._1YokD2._2GoDe3 > div._1YokD2._3Mn1Gg.col-8-12 > div:nth-child(2) > div > div.dyC4hf > div.CEmiEU > div > div._30jeq3._16Jk6d",
+  flipkartImage: "div._1BweB8 > div._3kidJX > div.CXW8mj._3nMexc > img",
 };
 
 app.post("/info", (req, res) => {
@@ -26,33 +28,39 @@ app.post("/info", (req, res) => {
           element.url,
           element.site,
           element.finalprice,
-          obj["flipkart"]
+          obj["flipkart"],
+          obj["flipkartImage"]
         )
       : element.site === "amazon"
       ? responseGiver(
           element.url,
           element.site,
           element.finalprice,
-          obj["amazon"]
+          obj["amazon"],
+          obj["amazonImage"]
         )
       : "";
 
-    async function responseGiver(url, site, finalprice, find) {
-      console.log(finalprice);
+    async function responseGiver(url, site, finalprice, find, imglink) {
       const response = await fetch(url);
       const body = await response.text();
       const $ = cheerio.load(body);
       const pricess = $(find).text().replace(/[₹,.]/g, "");
+      const imagess = $(imglink).attr("src");
+      console.log(imagess);
       if (!pricess || pricess == "") {
-        responseGiver(url, site, finalprice, find);
+        responseGiver(url, site, finalprice, find, imglink);
         return;
       }
+
       responseArr.push({
         yourPrice: finalprice,
         currentPrice: pricess,
         buyLink: url,
         webiste: site,
+        imageLink: imagess,
       });
+      console.log(finalprice);
       if (data.length === responseArr.length) {
         res.status(200).json(responseArr);
         return;

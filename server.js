@@ -11,8 +11,7 @@ app.use(cors());
 const obj = {
   amazon:'.priceToPay > span:nth-child(2) > span.a-price-whole',
   amazonImage: "#landingImage",
-  flipkart:
-    "div._30jeq3._16Jk6d",
+  flipkart:"div._30jeq3._16Jk6d",
   flipkartImage: "._3nMexc > img",
 };
 
